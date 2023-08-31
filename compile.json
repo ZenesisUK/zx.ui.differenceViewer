@@ -1,0 +1,31 @@
+{
+  "$schema": "https://qooxdoo.org/schema/compile-1-0-0.json",
+  "targets": [
+    {
+      "type": "source",
+      "outputPath": "compiled/source",
+      "babelOptions": {
+        "targets": "Chrome >= 80, Firefox >= 80, edge >= 18"
+      }
+    },
+    {
+      "type": "build",
+      "outputPath": "compiled/build",
+      "babelOptions": {
+        "targets": "Chrome >= 80, Firefox >= 80, edge >= 18"
+      }
+    }
+  ],
+  "defaultTarget": "source",
+  "locales": ["en"],
+  "environment": {
+    "qx.icontheme": "Tango"
+  },
+  "applications": [
+    {
+      "class": "zx.demo.Application",
+      "theme": "zx.demo.theme.tangible.Theme",
+      "name": "zx"
+    }
+  ]
+}

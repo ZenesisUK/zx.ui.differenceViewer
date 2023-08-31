@@ -1,0 +1,27 @@
+{
+  "$schema": "https://qooxdoo.org/schema/Manifest-2-0-0.json",
+  "info": {
+    "name": "zx",
+    "summary": "",
+    "description": "",
+    "homepage": "",
+    "license": "MIT license",
+    "authors": [
+      {
+        "name": "Will Johnson",
+        "email": "(WillsterJohnson)"
+      }
+    ],
+    "version": "1.0.0"
+  },
+  "provides": {
+    "namespace": "zx",
+    "encoding": "utf-8",
+    "class": "source/class",
+    "resource": "source/resource",
+    "translation": "source/translation"
+  },
+  "requires": {
+    "@qooxdoo/framework": "^7.6.1"
+  }
+}
