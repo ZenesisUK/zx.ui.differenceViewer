@@ -15,5 +15,18 @@ qx.Theme.define("zx.ui.differenceViewer.theme.MDecoration", {
         DIFFERENCE VIEWER
       ---------------------------------------------------------------------------
     */
+
+    "differenceviewer-rowtitles": {
+      style: {
+        width: [0, 1, 0, 0],
+        color: "black"
+      }
+    },
+    "differenceviewer-columntitles": {
+      style: {
+        width: [0, 0, 1, 0],
+        color: "black"
+      }
+    }
   }
 });
