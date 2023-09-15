@@ -11,6 +11,7 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceViewer", {
     );
 
     this.__columnWidgets = [];
+    this.__columnHeaders = [];
     this.__gridCells = [];
     this.__gridCellWidgets = [];
 
@@ -208,7 +209,7 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceViewer", {
     __columnHeaders: null,
 
     _setColumnHeader(column, header) {
-      this.__columnHeaders ??= [new qx.ui.basic.Label("&nbsp;").set({ rich: true })];
+      this.__columnHeaders[0] ??= new qx.ui.basic.Label("&nbsp;").set({ rich: true });
       this._ensureColumn(column);
       this.__columnHeaders[column] = header;
       this._updateHeaderWidgets();
@@ -265,6 +266,19 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceViewer", {
       }
       this.__columnHeaders = headersLessColumn;
       this._updateHeaderWidgets();
+      this._contentChange();
+    },
+
+    clearAll() {
+      this.__columnWidgets.forEach(columnWidget => columnWidget.removeAll());
+      this.__columnWidgets.forEach(columnWidget => columnWidget.dispose());
+      this.getChildControl("content").removeAll();
+      this.getChildControl("header").removeAll();
+      this.__columnWidgets = [];
+      this.__gridCells = [];
+      this.__gridCellWidgets = [];
+      this.__columnHeaders = [];
+
       this._contentChange();
     },
 

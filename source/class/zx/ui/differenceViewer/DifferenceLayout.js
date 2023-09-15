@@ -57,9 +57,9 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceLayout", {
           0,
           rowTops[row] ?? 0,
           Math.max(sizes.columnWidths[column] ?? 0, this._getWidget().getBounds()?.width ?? 0) +
-            padding.left +
-            padding.right,
-          (sizes.rowHeights[row] ?? 0) + padding.top + padding.bottom
+            (padding?.left ?? 0) +
+            (padding?.right ?? 0),
+          (sizes.rowHeights[row] ?? 0) + (padding?.top ?? 0) + (padding?.bottom ?? 0)
         );
       }
     },
