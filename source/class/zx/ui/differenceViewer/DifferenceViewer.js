@@ -240,7 +240,9 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceViewer", {
               clear: () => this.clearColumn(i)
             }
           );
+
           this.getChildControl("header").add(columnHeader, { flex: 1 });
+          this.bind("showColumnControls", columnHeader, "showControls");
         }
       }
       const sizes = this.__sizeCalculator.getSizes();
