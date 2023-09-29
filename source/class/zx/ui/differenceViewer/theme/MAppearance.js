@@ -81,6 +81,8 @@ qx.Theme.define("zx.ui.differenceViewer.theme.MAppearance", {
     ---------------------------------------------------------------------------
     */
 
+    "difference-cell": {},
+    "difference-cell-rowtitles": {},
     "difference-viewer": {
       style(state, style) {
         console.log("difference-viewer", state, style);
@@ -111,6 +113,7 @@ qx.Theme.define("zx.ui.differenceViewer.theme.MAppearance", {
         console.log("difference-column", state, style);
         style = qx.lang.Object.clone(style ?? {});
         style.margin = [0, 8];
+        style.decorator = "differenceviewer-column";
         return style;
       }
     },

@@ -22,6 +22,12 @@ qx.Theme.define("zx.ui.differenceViewer.theme.MDecoration", {
         color: "black"
       }
     },
+    "differenceviewer-column": {
+      style: {
+        width: [0, 1, 1, 0],
+        color: "black"
+      }
+    },
     "differenceviewer-columntitles": {
       style: {
         width: [0, 0, 1, 0],
