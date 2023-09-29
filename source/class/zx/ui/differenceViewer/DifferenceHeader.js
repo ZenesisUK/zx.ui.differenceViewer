@@ -8,6 +8,7 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceHeader", {
 
     const group = new qx.ui.container.Composite(new qx.ui.layout.HBox(10));
     group.setAppearance("difference-header-group");
+    this.bind("showControls", group, "visibility", { converter: v => (v ? "visible" : "excluded") });
 
     group.add(this.getChildControl("btnLeft"));
     if (!left) this.getChildControl("btnLeft").addState("disabled");
@@ -20,7 +21,7 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceHeader", {
     if (!right) this.getChildControl("btnRight").addState("disabled");
     else this.getChildControl("btnRight").addListener("execute", right);
 
-    this._add(group);
+    this._add(group, { flex: 0 });
   },
 
   properties: {
@@ -46,6 +47,12 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceHeader", {
       nullable: true,
       themeable: true,
       apply: "_applyIconClear"
+    },
+    showControls: {
+      check: "Boolean",
+      nullable: false,
+      init: true,
+      event: "changeShowControls",
     }
   },
 
@@ -71,14 +78,14 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceHeader", {
 
       switch (id) {
         case "btnLeft":
-          control = new qx.ui.form.Button();
+          control = new qx.ui.form.Button().set({ minWidth: 30 });
           control.setIcon(this.getIconLeft());
         case "btnRight":
-          control = new qx.ui.form.Button();
+          control = new qx.ui.form.Button().set({ minWidth: 30 });
           control.setIcon(this.getIconRight());
           break;
         case "btnClear":
-          control = new qx.ui.form.Button();
+          control = new qx.ui.form.Button().set({ minWidth: 30 });
           control.setIcon(this.getIconClear());
           break;
       }

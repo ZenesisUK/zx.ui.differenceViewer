@@ -129,9 +129,9 @@ qx.Theme.define("zx.ui.differenceViewer.theme.MAppearance", {
       style(state, style) {
         console.log("difference-header", state, style);
         style = qx.lang.Object.clone(style ?? {});
-        style.iconLeft = "";
-        style.iconRight = "";
-        style.iconClear = "";
+        style.iconLeft = "@FontAwesome/arrow-left/14";
+        style.iconRight = "@FontAwesome/arrow-right/14";
+        style.iconClear = "@FontAwesome/times/14";
         style.margin = [0, 8];
         return style;
       }

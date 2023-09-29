@@ -32,6 +32,13 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceViewer", {
     appearance: {
       init: "difference-viewer",
       refine: true
+    /**Whether to show or hide the controls */
+    showColumnControls: {
+      check: "Boolean",
+      nullable: false,
+      init: true,
+      event: "changeShowColumnControls"
+    },
     }
   },
 
