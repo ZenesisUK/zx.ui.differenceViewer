@@ -203,6 +203,11 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceViewer", {
       this._contentChange();
     },
 
+    setRowHeadersWidth(width) {
+      this.__columnWidgets[0].setWidth(width);
+    },
+
+
     /**
      * @type {qx.ui.core.Widget[][]}
      */
