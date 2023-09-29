@@ -41,6 +41,13 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceViewer", {
       init: true,
       event: "changeShowColumnControls"
     },
+
+    /**The number of columns in the grid */
+    columnCount: {
+      check: "Number",
+      nullable: false,
+      init: 0,
+      event: "changeColumnCount"
     }
   },
 
@@ -192,6 +199,7 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceViewer", {
 
       this._contentChange();
 
+      this.setColumnCount(this.__columnWidgets.length);
       return newCell.toHashCode();
     },
 
