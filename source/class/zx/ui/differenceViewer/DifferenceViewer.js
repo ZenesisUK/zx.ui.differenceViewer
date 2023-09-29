@@ -119,19 +119,25 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceViewer", {
       return control || super._createChildControlImpl(id);
     },
 
-    _ensureColumn(column) {
-      if (this.__columnWidgets[column]) return;
-      this.__columnWidgets[column] = new zx.ui.differenceViewer.DifferenceColumn(
+    /**
+     * Creates column if it doesn't exist at the given index
+     * @param {*} columnIndex
+     * @returns
+     */
+    _ensureColumn(columnIndex) {
+      if (this.__columnWidgets[columnIndex]) return;
+      const column = new zx.ui.differenceViewer.DifferenceColumn(
         this.__sizeCalculator,
-        column,
+        columnIndex,
         this.__rowgap
       );
-      this.getChildControl("content").addAt(this.__columnWidgets[column], column, {
-        flex: +!!column
+      this.__columnWidgets[columnIndex] = column;
+      this.getChildControl("content").addAt(this.__columnWidgets[columnIndex], columnIndex, {
+        flex: +!!columnIndex
       });
 
-      if (column === 0)
-        this.__columnWidgets[column].set({ appearance: "difference-column-rowtitles" });
+      if (columnIndex === 0)
+        this.__columnWidgets[columnIndex].set({ appearance: "difference-column-rowtitles" });
     },
 
     _calculateRowMax() {
@@ -198,6 +204,7 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceViewer", {
       this.__rowMax = Math.max(this.__rowMax ?? 0, row);
 
       this._contentChange();
+      this._updateHeaderWidgets();
 
       this.setColumnCount(this.__columnWidgets.length);
       return newCell.toHashCode();
@@ -218,12 +225,22 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceViewer", {
       if (row === this.__rowMax) this._calculateRowMax();
 
       this._contentChange();
+      this._updateHeaderWidgets();
     },
 
     setRowHeadersWidth(width) {
       this.__columnWidgets[0].setWidth(width);
     },
 
+    /**
+     * @returns {{rows: number, columns: number}} Size of the grid
+     */
+    getSize() {
+      return {
+        rows: this.__rowMax + 1,
+        columns: this.__columnWidgets.length
+      };
+    },
 
     /**
      * @type {qx.ui.core.Widget[][]}
@@ -294,16 +311,17 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceViewer", {
     },
 
     clearAll() {
-      this.__columnWidgets.forEach(columnWidget => columnWidget.removeAll());
-      this.__columnWidgets.forEach(columnWidget => columnWidget.dispose());
       this.getChildControl("content").removeAll();
       this.getChildControl("header").removeAll();
+      this.__columnWidgets.forEach(columnWidget => columnWidget.removeAll());
+      this.__columnWidgets.forEach(columnWidget => columnWidget.dispose());
+      this.__rowMax = null;
       this.__columnWidgets = [];
       this.__gridCells = [];
       this.__gridCellWidgets = [];
       this.__columnHeaders = [];
 
-      this._contentChange();
+      // this._contentChange();
     },
 
     /**
