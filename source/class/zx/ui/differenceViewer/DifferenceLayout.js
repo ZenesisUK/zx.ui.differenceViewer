@@ -8,11 +8,9 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceLayout", {
     this.__sizeCalculator.addListener(
       "invalidate",
       () => {
-        try {
+        if (this._getWidget()) {
           this._computeSizeHint();
           this.renderLayout();
-        } catch (e) {
-          /* no problem; expected to fail on creation */
         }
       },
       this
@@ -73,7 +71,7 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceLayout", {
       return {
         width: Math.max(
           sizes.columnWidths[this.getColumn()] ?? 0,
-          this._getWidget().getBounds()?.width ?? 0
+          this._getWidget()?.getBounds()?.width ?? 0
         ),
         height: sizes.rowHeights.reduce((acc, cur) => acc + (cur ?? 0) + rowgap, 0)
       };
