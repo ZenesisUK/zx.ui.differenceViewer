@@ -10,16 +10,6 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceColumn", {
     this.__sizeCalculator = sizeCalculator;
     this.__filledRows = new Map();
     this.__rowgap = rowgap;
-
-    //todo this is a hack to make sure that the widgets in this column are as wide as this column.
-    this.bind(
-      "width",
-      new grasshopper.utils.Target(width => {
-        for (const widget of this.__filledRows.values()) {
-          widget.getChildren().forEach(widget => widget.setMaxWidth(width));
-        }
-      })
-    );
   },
 
   properties: {
@@ -32,9 +22,7 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceColumn", {
       check: "Number",
       nullable: false,
       event: "changeColumn"
-    },
-
-
+    }
   },
 
   members: {
