@@ -15,7 +15,7 @@
     "version": "1.0.0"
   },
   "provides": {
-    "namespace": "zx",
+    "namespace": "zx.ui.differenceViewer",
     "encoding": "utf-8",
     "class": "source/class",
     "resource": "source/resource",
