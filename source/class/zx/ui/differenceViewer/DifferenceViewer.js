@@ -79,7 +79,7 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceViewer", {
     __gridCellWidgets: null,
 
     __onScrollX(evt) {
-w      const scrollPercentage = evt.getData();
+      const scrollPercentage = evt.getData();
       for (let idx = 1; idx < this.__columnWidgets.length; idx++) {
         const columnWidget = this.__columnWidgets[idx];
         columnWidget.scrollToX(columnWidget.getScrollMaxX() * (scrollPercentage / 100));
