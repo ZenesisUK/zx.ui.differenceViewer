@@ -80,8 +80,13 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceViewer", {
 
     __onScrollX(evt) {
       const scrollPercentage = evt.getData();
-      for (const columnWidget of this.__columnWidgets)
+      // for (const columnWidget of this.__columnWidgets)
+      //   columnWidget.scrollToX(columnWidget.getScrollMaxX() * (scrollPercentage / 100));
+      // this, but not for idx 0
+      for (let idx = 1; idx < this.__columnWidgets.length; idx++) {
+        const columnWidget = this.__columnWidgets[idx];
         columnWidget.scrollToX(columnWidget.getScrollMaxX() * (scrollPercentage / 100));
+      }
     },
 
     __onScrollY(evt) {
