@@ -48,7 +48,7 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceColumn", {
         differenceCell.add(widget, { left: 0, top: 0, bottom: 0 });
         this._add(differenceCell, layoutProps);
         differenceCell.addListener("resize", this._onUpdate, this);
-        
+
         this.bind("width", differenceCell, "width");
 
         this.__filledRows.set(layoutProps.row, differenceCell);

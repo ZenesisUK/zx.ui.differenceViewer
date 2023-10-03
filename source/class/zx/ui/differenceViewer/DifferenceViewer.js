@@ -79,10 +79,7 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceViewer", {
     __gridCellWidgets: null,
 
     __onScrollX(evt) {
-      const scrollPercentage = evt.getData();
-      // for (const columnWidget of this.__columnWidgets)
-      //   columnWidget.scrollToX(columnWidget.getScrollMaxX() * (scrollPercentage / 100));
-      // this, but not for idx 0
+w      const scrollPercentage = evt.getData();
       for (let idx = 1; idx < this.__columnWidgets.length; idx++) {
         const columnWidget = this.__columnWidgets[idx];
         columnWidget.scrollToX(columnWidget.getScrollMaxX() * (scrollPercentage / 100));
@@ -106,10 +103,14 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceViewer", {
       let control;
       switch (id) {
         case "header":
-          control = new qx.ui.container.Composite(new qx.ui.layout.HBox());
+          control = new qx.ui.container.Composite(
+            new zx.ui.differenceViewer.HorizontalOneAndFlex()
+          );
           break;
         case "content":
-          control = new qx.ui.container.Composite(new qx.ui.layout.HBox());
+          control = new qx.ui.container.Composite(
+            new zx.ui.differenceViewer.HorizontalOneAndFlex()
+          );
           break;
         case "scrollbar-x": // TODO: check that "x" is the correct name for horizontal scrollbar
           control = new qx.ui.core.scroll.ScrollBar("horizontal");
@@ -208,7 +209,7 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceViewer", {
 
       this.__rowMax = Math.max(this.__rowMax ?? 0, row);
 
-      this._contentChange();
+      this._contentChange(true);
       this._updateHeaderWidgets();
 
       this.setColumnCount(this.__columnWidgets.length);
@@ -248,7 +249,7 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceViewer", {
     },
 
     /**
-     * @type {qx.ui.core.Widget[][]}
+     * @type {qx.ui.core.Widget[]}
      */
     __columnHeaders: null,
 

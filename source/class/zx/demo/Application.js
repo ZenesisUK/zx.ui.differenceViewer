@@ -37,7 +37,10 @@ qx.Class.define("zx.demo.Application", {
 
       const doc = this.getRoot();
 
-      const viewer = new zx.ui.differenceViewer.DifferenceViewer(50).set({ maxHeight: 1300 });
+      const viewer = new zx.ui.differenceViewer.DifferenceViewer(50).set({
+        maxHeight: 1300,
+        showColumnControls: true
+      });
       doc.add(viewer, { left: 10, right: 10, bottom: 10, top: 10 });
 
       for (let rowIdx = 0; rowIdx < 30; rowIdx++) {
@@ -61,6 +64,27 @@ qx.Class.define("zx.demo.Application", {
         }
       }
       window.mv = (col, inc) => viewer.moveColumn(col, inc);
+      window.addCol = () => {
+        const colIdx = viewer.getColumnCount();
+        for (let rowIdx = 0; rowIdx < 30; rowIdx++) {
+          if (rowIdx === 0) {
+            viewer.add(new qx.ui.basic.Label(`COLUMN ${colIdx}`), {
+              row: rowIdx,
+              column: colIdx
+            });
+          } else if (colIdx === 0) {
+            viewer.add(new qx.ui.basic.Label(`ROW ${rowIdx}`), {
+              row: rowIdx,
+              column: colIdx
+            });
+          } else if (Math.random() > 0.4) {
+            viewer.add(this.__loremBox(), {
+              row: rowIdx,
+              column: colIdx
+            });
+          }
+        }
+      };
     },
 
     __loremBox() {
