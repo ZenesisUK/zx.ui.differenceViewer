@@ -132,7 +132,7 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceViewer", {
         this.__rowgap
       );
       this.__columnWidgets[columnIndex] = column;
-      this.getChildControl("content").addAt(this.__columnWidgets[columnIndex], columnIndex, {
+      this.getChildControl("content").addAt(column, columnIndex, {
         flex: +!!columnIndex
       });
 
