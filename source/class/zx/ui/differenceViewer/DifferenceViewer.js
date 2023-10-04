@@ -1,11 +1,10 @@
 qx.Class.define("zx.ui.differenceViewer.DifferenceViewer", {
   extend: qx.ui.container.Composite,
 
-  construct(rowgap = 0) {
+  construct() {
     super(new qx.ui.layout.HBox());
 
     this.__sizeCalculator = new zx.ui.differenceViewer.SizeCalculator();
-    this.__rowgap = rowgap;
     this.__sizeCalculator.setCellSizeHintCallback((row, col) =>
       this.__gridCells[col]?.[row]?.getSizeHint()
     );
@@ -18,11 +17,15 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceViewer", {
     this.addListener("roll", this._onMouseWheel, this);
     this.addListener("resize", this._contentChange, this);
 
-    this.__sizeCalculator.addListener("invalidate", this._updateHeaderWidgets, this);
+    this.__sizeCalculator.addListener("invalidate", this._invalidateHeaderWidgets, this);
 
     const vertical = new qx.ui.container.Composite(new qx.ui.layout.VBox());
-    vertical.add(this.getChildControl("header"));
-    vertical.add(this.getChildControl("content"), { flex: 1 });
+
+    const content = this.getChildControl("content"); // load content before header - header layout needs to mimic content layout
+    const header = this.getChildControl("header");
+
+    vertical.add(header);
+    vertical.add(content, { flex: 1 });
     vertical.add(this.getChildControl("scrollbar-x"));
     this._add(vertical, { flex: 1 });
     this._add(this.getChildControl("scrollbar-y"));
@@ -53,7 +56,6 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceViewer", {
 
   members: {
     __sizeCalculator: null,
-    __rowgap: null,
 
     /**
      * Every column container of the grid
@@ -104,13 +106,15 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceViewer", {
       switch (id) {
         case "header":
           control = new qx.ui.container.Composite(
-            new zx.ui.differenceViewer.HorizontalOneAndFlex()
+            new zx.ui.differenceViewer.HorizontalOneAndFlex(this.getChildControl("content.layout"))
           );
           break;
+
         case "content":
-          control = new qx.ui.container.Composite(
-            new zx.ui.differenceViewer.HorizontalOneAndFlex()
-          );
+          control = new qx.ui.container.Composite(this.getChildControl("content.layout"));
+          break;
+        case "content.layout":
+          control = new zx.ui.differenceViewer.HorizontalOneAndFlex();
           break;
         case "scrollbar-x": // TODO: check that "x" is the correct name for horizontal scrollbar
           control = new qx.ui.core.scroll.ScrollBar("horizontal");
@@ -126,6 +130,14 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceViewer", {
     },
 
     /**
+     * @override
+     */
+    invalidateLayoutCache() {
+      super.invalidateLayoutCache();
+      this.__sizeCalculator.invalidate();
+    },
+
+    /**
      * Creates column if it doesn't exist at the given index
      * @param {*} columnIndex
      * @returns
@@ -134,8 +146,7 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceViewer", {
       if (this.__columnWidgets[columnIndex]) return;
       const column = new zx.ui.differenceViewer.DifferenceColumn(
         this.__sizeCalculator,
-        columnIndex,
-        this.__rowgap
+        columnIndex
       );
       this.__columnWidgets[columnIndex] = column;
       this.getChildControl("content").addAt(column, columnIndex, {
@@ -203,13 +214,14 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceViewer", {
       this.__gridCellWidgets[column] = foundWidgets;
 
       this.__columnWidgets.forEach((columnWidget, idx) => {
-        if (idx === column || columnWidget.hasCellForRow(row)) return;
-        columnWidget.add(new qx.ui.core.Widget(), { row });
+        if (!columnWidget.hasCellForRow(row)) columnWidget.add(new qx.ui.core.Widget(), { row });
+        if (!columnWidget.hasCellForRow(this.__rowMax))
+          columnWidget.add(new qx.ui.core.Widget(), { row: this.__rowMax });
       });
 
       this.__rowMax = Math.max(this.__rowMax ?? 0, row);
 
-      this._contentChange(true);
+      this._contentChange(row >= this.__rowMax);
       this._updateHeaderWidgets();
 
       this.setColumnCount(this.__columnWidgets.length);
@@ -260,7 +272,7 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceViewer", {
       this._updateHeaderWidgets();
     },
 
-    _updateHeaderWidgets() {
+    _invalidateHeaderWidgets() {
       this.getChildControl("header").removeAll();
       for (let i = 0; i < this.__columnHeaders.length; i++) {
         if (i === 0) this.getChildControl("header").add(this.__columnHeaders[i], { flex: 0 });
@@ -278,6 +290,10 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceViewer", {
           this.bind("showColumnControls", columnHeader, "showControls");
         }
       }
+    },
+
+    _updateHeaderWidgets() {
+      this._invalidateHeaderWidgets();
       const sizes = this.__sizeCalculator.getSizes();
       for (let i = 0; i < this.__columnHeaders.length; i++) {
         const header = this.__columnHeaders[i];
@@ -290,28 +306,15 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceViewer", {
     /**
      * Removes a column from the difference viewer given it's index
      */
-    clearColumn(column) {
-      const gridCellsLessColumn = this.__gridCellWidgets.filter((_, idx) => idx !== column);
-      const headersLessColumn = this.__columnHeaders.filter((_, idx) => idx !== column);
+    clearColumn(columnIndex) {
+      let columnWidget = this.__columnWidgets[columnIndex];
+      this.getChildControl("content")._remove(columnWidget);
+      this.__gridCellWidgets = this.__gridCellWidgets.filter((_, idx) => idx !== columnIndex);
+      this.__columnHeaders = this.__columnHeaders.filter((_, idx) => idx !== columnIndex);
+      qx.lang.Array.removeAt(this.__columnWidgets, columnIndex);
+      qx.lang.Array.removeAt(this.__gridCells, columnIndex);
+      columnWidget.dispose();
 
-      // remove everything
-      this.getChildControl("content").removeAll();
-      this.getChildControl("header").removeAll();
-      this.__columnWidgets.forEach(columnWidget => columnWidget.removeAll());
-      this.__columnWidgets.forEach(columnWidget => columnWidget.dispose());
-      this.__columnWidgets = [];
-      this.__gridCells = [];
-      this.__gridCellWidgets = [];
-
-      // iterate grid cells and re-add them
-      for (let col = 0; col < gridCellsLessColumn.length; col++) {
-        for (let row = 0; row < gridCellsLessColumn[col].length; row++) {
-          const cell = gridCellsLessColumn[col][row];
-          if (!cell) continue;
-          this.add(cell, { row, column: col });
-        }
-      }
-      this.__columnHeaders = headersLessColumn;
       this._updateHeaderWidgets();
       this._contentChange();
     },

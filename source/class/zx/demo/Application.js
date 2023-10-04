@@ -37,14 +37,14 @@ qx.Class.define("zx.demo.Application", {
 
       const doc = this.getRoot();
 
-      const viewer = new zx.ui.differenceViewer.DifferenceViewer(50).set({
+      const viewer = new zx.ui.differenceViewer.DifferenceViewer().set({
         maxHeight: 1300,
         showColumnControls: true
       });
       doc.add(viewer, { left: 10, right: 10, bottom: 10, top: 10 });
 
       for (let rowIdx = 0; rowIdx < 30; rowIdx++) {
-        for (let colIdx = 0; colIdx < 7; colIdx++) {
+        for (let colIdx = 0; colIdx < 2; colIdx++) {
           if (rowIdx === 0) {
             viewer.add(new qx.ui.basic.Label(`COLUMN ${colIdx}`), {
               row: rowIdx,
@@ -65,6 +65,7 @@ qx.Class.define("zx.demo.Application", {
       }
       window.mv = (col, inc) => viewer.moveColumn(col, inc);
       window.addCol = () => {
+        debugger;
         const colIdx = viewer.getColumnCount();
         for (let rowIdx = 0; rowIdx < 30; rowIdx++) {
           if (rowIdx === 0) {

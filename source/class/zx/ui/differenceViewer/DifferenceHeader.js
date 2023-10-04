@@ -6,9 +6,11 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceHeader", {
 
     this._add(title, { flex: 1 });
 
-    const group = new qx.ui.container.Composite(new qx.ui.layout.HBox(10));
+    const group = new qx.ui.container.Composite(new qx.ui.layout.HBox(0));
     group.setAppearance("difference-header-group");
-    this.bind("showControls", group, "visibility", { converter: v => (v ? "visible" : "excluded") });
+    this.bind("showControls", group, "visibility", {
+      converter: v => (v ? "visible" : "excluded")
+    });
 
     group.add(this.getChildControl("btnLeft"));
     if (!left) this.getChildControl("btnLeft").addState("disabled");
@@ -52,7 +54,7 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceHeader", {
       check: "Boolean",
       nullable: false,
       init: true,
-      event: "changeShowControls",
+      event: "changeShowControls"
     }
   },
 
@@ -80,13 +82,17 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceHeader", {
         case "btnLeft":
           control = new qx.ui.form.Button().set({ minWidth: 30 });
           control.setIcon(this.getIconLeft());
+          control.setToolTipText("Move to left");
+          break;
         case "btnRight":
           control = new qx.ui.form.Button().set({ minWidth: 30 });
           control.setIcon(this.getIconRight());
+          control.setToolTipText("Move to right");
           break;
         case "btnClear":
           control = new qx.ui.form.Button().set({ minWidth: 30 });
           control.setIcon(this.getIconClear());
+          control.setToolTipText("Remove from view");
           break;
       }
       return control || super._createChildControlImpl(id);

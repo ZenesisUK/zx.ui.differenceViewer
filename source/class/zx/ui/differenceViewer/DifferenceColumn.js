@@ -1,15 +1,14 @@
 qx.Class.define("zx.ui.differenceViewer.DifferenceColumn", {
   extend: qx.ui.core.scroll.ScrollPane,
 
-  construct(sizeCalculator, column, rowgap) {
+  construct(sizeCalculator, column) {
     super();
-    const layout = new zx.ui.differenceViewer.DifferenceLayout(sizeCalculator, column, rowgap);
+    const layout = new zx.ui.differenceViewer.DifferenceLayout(sizeCalculator, column);
     this._setLayout(layout);
     this.setColumn(column);
     this.bind("column", layout, "column");
     this.__sizeCalculator = sizeCalculator;
     this.__filledRows = new Map();
-    this.__rowgap = rowgap;
   },
 
   properties: {
@@ -27,7 +26,6 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceColumn", {
 
   members: {
     __sizeCalculator: null,
-    __rowgap: null,
     /**
      * @type {Map<number, qx.ui.core.Widget>}
      */
@@ -41,15 +39,18 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceColumn", {
       if (widget) {
         this.remove(this.__filledRows.get(layoutProps.row));
 
-        const differenceCell = new qx.ui.container.Composite(new qx.ui.layout.Canvas());
+        const differenceCell = new qx.ui.container.Composite(new qx.ui.layout.Basic()).set({
+          minWidth: 0
+        });
         differenceCell.setAppearance(
           this.getColumn() ? "difference-cell" : "difference-cell-rowtitles"
         );
-        differenceCell.add(widget, { left: 0, top: 0, bottom: 0 });
+        differenceCell.add(widget, { left: 0, top: 0 });
         this._add(differenceCell, layoutProps);
         differenceCell.addListener("resize", this._onUpdate, this);
 
         this.bind("width", differenceCell, "width");
+        this.bind("width", differenceCell, "maxWidth");
 
         this.__filledRows.set(layoutProps.row, differenceCell);
 
@@ -74,10 +75,9 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceColumn", {
      */
     getScrollSize() {
       const sizes = this.__sizeCalculator.getSizes();
-      const rowgap = this.__rowgap;
       return {
         width: sizes.columnWidths[this.getColumn()] ?? 0,
-        height: sizes.rowHeights.reduce((acc, cur) => acc + (cur ?? 0) + rowgap, 0)
+        height: sizes.rowHeights.reduce((acc, cur) => acc + (cur ?? 0), 0)
       };
     }
   }

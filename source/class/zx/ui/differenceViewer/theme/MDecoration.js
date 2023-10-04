@@ -16,6 +16,11 @@ qx.Theme.define("zx.ui.differenceViewer.theme.MDecoration", {
       ---------------------------------------------------------------------------
     */
 
+    "differenceviewer-cell": {
+      style: {
+        bottom: [1, "dotted", "#999"]
+      }
+    },
     "differenceviewer-rowtitles": {
       style: {
         width: [0, 1, 0, 0],

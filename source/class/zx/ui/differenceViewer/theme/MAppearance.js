@@ -81,8 +81,22 @@ qx.Theme.define("zx.ui.differenceViewer.theme.MAppearance", {
     ---------------------------------------------------------------------------
     */
 
-    "difference-cell": {},
-    "difference-cell-rowtitles": {},
+    "difference-cell": {
+      style(state, style) {
+        console.log("difference-cell", state, style);
+        style = qx.lang.Object.clone( style ?? {} );
+        style.decorator = "differenceviewer-cell";
+        style.textColor = "black";
+        return style;
+      }
+    },
+    "difference-cell-rowtitles": {
+      style(state, style) {
+        console.log("difference-cell-rowtitles", state, style);
+        style = qx.lang.Object.clone(style ?? {});
+        return style;
+      }
+    },
     "difference-viewer": {
       style(state, style) {
         console.log("difference-viewer", state, style);

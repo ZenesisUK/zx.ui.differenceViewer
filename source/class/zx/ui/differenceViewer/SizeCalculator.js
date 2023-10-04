@@ -43,17 +43,15 @@ qx.Class.define("zx.ui.differenceViewer.SizeCalculator", {
     },
 
     _calculate() {
-      if (this.__rowHeights && this.__columnWidth) return;
+      if (this.__rowHeights && this.__columnWidths) return;
       const cellSizeHintCallback = this.getCellSizeHintCallback();
       this.__rowHeights = [];
       this.__columnWidths = [];
       for (let row = 0; row < this.__rowCount; row++) {
         for (let col = 0; col < this.__columnCount; col++) {
           const cellSize = cellSizeHintCallback(row, col);
-          if (!cellSize) continue;
-          const { width, height } = cellSize;
-          this.__rowHeights[row] = Math.max(this.__rowHeights[row] ?? 0, height);
-          this.__columnWidths[col] = Math.max(this.__columnWidths[col] ?? 0, width);
+          this.__rowHeights[row] = Math.max(this.__rowHeights[row] ?? 0, cellSize?.height ?? 0);
+          this.__columnWidths[col] = Math.max(this.__columnWidths[col] ?? 0, cellSize?.width ?? 0);
         }
       }
     },
@@ -68,6 +66,8 @@ qx.Class.define("zx.ui.differenceViewer.SizeCalculator", {
      */
     setAvailableSize(left, top, width, height, columnCount, rowCount) {
       if (
+        this.__rowHeights &&
+        this.__columnWidths &&
         this.__left === left &&
         this.__top === top &&
         this.__width === width &&
@@ -77,6 +77,16 @@ qx.Class.define("zx.ui.differenceViewer.SizeCalculator", {
       )
         return false;
 
+      console.log({
+        rowHeights: this.__rowHeights,
+        columnWidths: this.__columnWidths,
+        left: [this.__left === left, this.__left, left],
+        top: [this.__top === top, this.__top, top],
+        width: [this.__width === width, this.__width, width],
+        height: [this.__height === height, this.__height, height],
+        columnCount: [this.__columnCount === columnCount, this.__columnCount, columnCount],
+        rowCount: [this.__rowCount === rowCount, this.__rowCount, rowCount]
+      });
       this.__left = left;
       this.__top = top;
       this.__width = width;
