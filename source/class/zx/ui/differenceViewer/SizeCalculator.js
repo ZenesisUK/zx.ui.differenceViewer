@@ -77,16 +77,6 @@ qx.Class.define("zx.ui.differenceViewer.SizeCalculator", {
       )
         return false;
 
-      console.log({
-        rowHeights: this.__rowHeights,
-        columnWidths: this.__columnWidths,
-        left: [this.__left === left, this.__left, left],
-        top: [this.__top === top, this.__top, top],
-        width: [this.__width === width, this.__width, width],
-        height: [this.__height === height, this.__height, height],
-        columnCount: [this.__columnCount === columnCount, this.__columnCount, columnCount],
-        rowCount: [this.__rowCount === rowCount, this.__rowCount, rowCount]
-      });
       this.__left = left;
       this.__top = top;
       this.__width = width;
