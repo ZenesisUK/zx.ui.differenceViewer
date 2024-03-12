@@ -308,12 +308,14 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceViewer", {
      */
     clearColumn(columnIndex) {
       let columnWidget = this.__columnWidgets[columnIndex];
-      this.getChildControl("content")._remove(columnWidget);
+      if (columnWidget) {
+        this.getChildControl("content")._remove(columnWidget);
+      }
       this.__gridCellWidgets = this.__gridCellWidgets.filter((_, idx) => idx !== columnIndex);
       this.__columnHeaders = this.__columnHeaders.filter((_, idx) => idx !== columnIndex);
       qx.lang.Array.removeAt(this.__columnWidgets, columnIndex);
       qx.lang.Array.removeAt(this.__gridCells, columnIndex);
-      columnWidget.dispose();
+      columnWidget?.dispose();
 
       this._updateHeaderWidgets();
       this._contentChange();
