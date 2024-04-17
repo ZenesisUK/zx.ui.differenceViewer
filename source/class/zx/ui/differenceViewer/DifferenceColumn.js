@@ -21,15 +21,23 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceColumn", {
       check: "Number",
       nullable: false,
       event: "changeColumn"
+    },
+
+    model: {
+      init: null,
+      nullable: true,
+      event: "changeModel"
     }
   },
 
   members: {
     __sizeCalculator: null,
+
     /**
      * @type {Map<number, qx.ui.core.Widget>}
      */
     __filledRows: null,
+
     /**
      * !IMPORTANT!
      * This method uses magic (it wraps your widget in another) to support styling all cells

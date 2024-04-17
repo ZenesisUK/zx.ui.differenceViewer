@@ -54,31 +54,27 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceViewer", {
     }
   },
 
+  events: {
+    clearColumn: "qx.event.type.Data"
+  },
+
   members: {
     __sizeCalculator: null,
 
-    /**
-     * Every column container of the grid
-     * @type {zx.ui.differenceViewer.DifferenceColumn[]}
-     */
+    /** @type {zx.ui.differenceViewer.DifferenceColumn[]} Every column container of the grid */
     __columnWidgets: null,
 
-    /**
-     * The largest row index of all cells (cached)
-     */
+    /** The largest row index of all cells (cached) */
     __rowMax: null,
 
-    /**
-     * Every cell on the grid
-     * @type {qx.ui.core.Widget[][]}
-     */
+    /** @type {qx.ui.core.Widget[][]} Every cell on the grid */
     __gridCells: null,
 
-    /**
-     * The user-provided widgets for cell contents
-     * @type {qx.ui.core.Widget[][]}
-     */
+    /** @type {qx.ui.core.Widget[][]} The user-provided widgets for cell contents */
     __gridCellWidgets: null,
+
+    /** @type {qx.ui.core.Widget[]} */
+    __columnHeaders: null,
 
     __onScrollX(evt) {
       const scrollPercentage = evt.getData();
@@ -162,7 +158,9 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceViewer", {
     },
 
     _contentChange(force = false) {
-      if (force) this.__sizeCalculator.invalidate();
+      if (force) {
+        this.__sizeCalculator.invalidate();
+      }
       this.__sizeCalculator.setAvailableSize(
         this.getPaddingLeft(),
         this.getPaddingTop(),
@@ -251,6 +249,26 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceViewer", {
     },
 
     /**
+     * Returns model data for a column
+     *
+     * @param {Integer} columnIndex
+     * @returns {*}
+     */
+    getColumnModel(columnIndex) {
+      return this.__columnWidgets[columnIndex].getModel();
+    },
+
+    /**
+     * Sets model data for a column
+     *
+     * @param {Integer} columnIndex
+     * @param {*} value
+     */
+    setColumnModel(columnIndex, value) {
+      this.__columnWidgets[columnIndex].setModel(value);
+    },
+
+    /**
      * @returns {{rows: number, columns: number}} Size of the grid
      */
     getSize() {
@@ -259,11 +277,6 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceViewer", {
         columns: this.__columnWidgets.length
       };
     },
-
-    /**
-     * @type {qx.ui.core.Widget[]}
-     */
-    __columnHeaders: null,
 
     _setColumnHeader(column, header) {
       this.__columnHeaders[0] ??= new qx.ui.basic.Label("&nbsp;").set({ rich: true });
@@ -307,6 +320,7 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceViewer", {
      * Removes a column from the difference viewer given it's index
      */
     clearColumn(columnIndex) {
+      this.fireDataEvent("clearColumn", columnIndex);
       let columnWidget = this.__columnWidgets[columnIndex];
       if (columnWidget) {
         this.getChildControl("content")._remove(columnWidget);
@@ -319,6 +333,7 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceViewer", {
 
       this._updateHeaderWidgets();
       this._contentChange();
+      this.setColumnCount(this.__columnWidgets.length);
     },
 
     clearAll() {
@@ -331,6 +346,7 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceViewer", {
       this.__gridCells = [];
       this.__gridCellWidgets = [];
       this.__columnHeaders = [];
+      this.setColumnCount(0);
 
       // this._contentChange();
     },

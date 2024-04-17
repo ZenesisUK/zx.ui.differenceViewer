@@ -13,15 +13,21 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceHeader", {
     });
 
     group.add(this.getChildControl("btnLeft"));
-    if (!left) this.getChildControl("btnLeft").addState("disabled");
-    else this.getChildControl("btnLeft").addListener("execute", left);
+    if (!left) {
+      this.getChildControl("btnLeft").addState("disabled");
+    } else {
+      this.getChildControl("btnLeft").addListener("execute", left);
+    }
 
     group.add(this.getChildControl("btnClear"));
     this.getChildControl("btnClear").addListener("execute", clear);
 
     group.add(this.getChildControl("btnRight"));
-    if (!right) this.getChildControl("btnRight").addState("disabled");
-    else this.getChildControl("btnRight").addListener("execute", right);
+    if (!right) {
+      this.getChildControl("btnRight").addState("disabled");
+    } else {
+      this.getChildControl("btnRight").addListener("execute", right);
+    }
 
     this._add(group, { flex: 0 });
   },
