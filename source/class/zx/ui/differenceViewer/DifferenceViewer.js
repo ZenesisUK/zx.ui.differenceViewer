@@ -169,6 +169,7 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceViewer", {
         this.__columnWidgets.length,
         this.__rowMax + 1
       );
+      this.setColumnCount(this.__columnWidgets.length);
     },
 
     /*
