@@ -76,6 +76,23 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceViewer", {
     /** @type {qx.ui.core.Widget[]} */
     __columnHeaders: null,
 
+    /** @type {boolean} */
+    __isMassChange: false,
+
+    /**
+     * Indicate to the difference viewer that you intend to make many changes, and it should wait
+     * until you're done (call `endMassChange` to signal you're done) to recalculate the layout
+     */
+    beginMassChange() {
+      this.__isMassChange = true;
+    },
+
+    endMassChange() {
+      this.__isMassChange = false;
+      this._contentChange(true);
+      this._updateHeaderWidgets();
+    },
+
     __onScrollX(evt) {
       const scrollPercentage = evt.getData();
       for (let idx = 1; idx < this.__columnWidgets.length; idx++) {
@@ -158,6 +175,9 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceViewer", {
     },
 
     _contentChange(force = false) {
+      if (this.__isMassChange) {
+        return;
+      }
       if (force) {
         this.__sizeCalculator.invalidate();
       }
@@ -307,6 +327,9 @@ qx.Class.define("zx.ui.differenceViewer.DifferenceViewer", {
     },
 
     _updateHeaderWidgets() {
+      if (this.__isMassChange) {
+        return;
+      }
       this._invalidateHeaderWidgets();
       const sizes = this.__sizeCalculator.getSizes();
       for (let i = 0; i < this.__columnHeaders.length; i++) {
