@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 
-qx.Class.define("myapp.compile.CompilerApi", {
+qx.Class.define("zx.ui.differenceViewer.CompilerApi", {
   extend: qx.tool.cli.api.CompilerApi,
 
   members: {
@@ -24,5 +24,5 @@ qx.Class.define("myapp.compile.CompilerApi", {
 });
 
 module.exports = {
-  CompilerApi: myapp.compile.CompilerApi
+  CompilerApi: zx.ui.differenceViewer.CompilerApi
 };
