@@ -3,3 +3,4 @@
 /qx_packages
 .package-cache.json
 .compile.json
+node_modules
