@@ -18,7 +18,7 @@
 /**
  * Helper class to simulate the TestRunner, but without loading all the classes
  */
-qx.Class.define("zx.test.TestRunner", {
+qx.Class.define("zx.test.differenceViewer.TestRunner", {
   extend: qx.core.Object,
   statics: {
     /**

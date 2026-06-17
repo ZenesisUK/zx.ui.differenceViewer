@@ -23,8 +23,8 @@
   },
   "applications": [
     {
-      "class": "zx.demo.Application",
-      "theme": "zx.demo.theme.tangible.Theme",
+      "class": "zx.demo.differenceViewer.Application",
+      "theme": "zx.demo.differenceViewer.theme.tangible.Theme",
       "name": "zx"
     }
   ]

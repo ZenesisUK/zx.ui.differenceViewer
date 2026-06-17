@@ -8,12 +8,12 @@
 
 ************************************************************************ */
 
-qx.Theme.define("zx.demo.theme.simple.Theme", {
+qx.Theme.define("zx.demo.differenceViewer.theme.simple.Theme", {
   meta: {
-    color: zx.demo.theme.simple.Color,
-    decoration: zx.demo.theme.simple.Decoration,
+    color: zx.demo.differenceViewer.theme.simple.Color,
+    decoration: zx.demo.differenceViewer.theme.simple.Decoration,
     font: qx.theme.simple.Font,
     icon: qx.theme.icon.Tango,
-    appearance: zx.demo.theme.simple.Appearance
+    appearance: zx.demo.differenceViewer.theme.simple.Appearance
   }
 });

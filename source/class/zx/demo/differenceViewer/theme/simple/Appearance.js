@@ -8,7 +8,7 @@
 
 ************************************************************************ */
 
-qx.Theme.define("zx.demo.theme.simple.Decoration", {
-  extend: qx.theme.simple.Decoration,
-  include: [zx.ui.differenceViewer.theme.MDecoration]
+qx.Theme.define("zx.demo.differenceViewer.theme.simple.Appearance", {
+  extend: qx.theme.simple.Appearance,
+  include: [zx.ui.differenceViewer.theme.MAppearance]
 });

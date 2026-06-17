@@ -11,7 +11,7 @@
 /**
  * This is the main application class of "zx"
  */
-qx.Class.define("zx.demo.Application", {
+qx.Class.define("zx.demo.differenceViewer.Application", {
   extend: qx.application.Standalone,
 
   /*
@@ -28,7 +28,7 @@ qx.Class.define("zx.demo.Application", {
     async main() {
       super.main();
 
-      await zx.test.TestRunner.runAll(zx.test.differenceViewer.SizeCalculator);
+      await zx.test.differenceViewer.TestRunner.runAll(zx.test.differenceViewer.SizeCalculator);
 
       if (qx.core.Environment.get("qx.debug")) {
         qx.log.appender.Native;

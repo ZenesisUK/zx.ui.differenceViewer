@@ -8,7 +8,7 @@
 
 ************************************************************************ */
 
-qx.Theme.define("zx.demo.theme.indigo.Decoration", {
+qx.Theme.define("zx.demo.differenceViewer.theme.indigo.Decoration", {
   extend: qx.theme.indigo.Decoration,
   include: [zx.ui.differenceViewer.theme.MDecoration]
 });
